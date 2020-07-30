@@ -274,9 +274,11 @@ def voc_eval(detpath, annopath, imagesetfile, classname, ovthresh=0.5, use_07_me
             jmax = np.argmax(overlaps)
 
         if ovmax > ovthresh:
+            #如果是困难就不计数
             if not R["difficult"][jmax]:
                 if not R["det"][jmax]:
                     tp[d] = 1.0
+                    #这个实例已经被标记了，以防网络对同一个物体生成多个检测框以此提高准确度。
                     R["det"][jmax] = 1
                 else:
                     fp[d] = 1.0
